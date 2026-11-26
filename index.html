@@ -29,6 +29,7 @@
   .find input { width:100%; font-size:17px; padding:12px 14px; border:2px solid var(--accent); border-radius:12px; background:var(--card); color:var(--ink); }
   .find p { margin:6px 2px 0; font-size:12px; color:var(--sub); }
   .card.hit { outline:3px solid var(--yel); box-shadow:0 0 0 6px rgba(255,216,74,.35); }
+  .other { display:block; text-align:center; background:var(--accent); color:#fff; text-decoration:none; font-weight:800; font-size:15px; border-radius:12px; padding:10px 12px; margin:0 0 12px; }
   .none { display:none; text-align:center; color:var(--sub); padding:20px 0; }
 </style>
 </head>
@@ -39,6 +40,7 @@
     <h1>집꿀템 노트</h1>
     <p class="lead">릴스에 나온 생활 꿀템을 최신 순으로 모았어요</p>
   </header>
+  <a class="other" href="al/">득템송·알쓸신템 상품은 여기 →</a>
   <p class="notice">이 페이지는 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다. 가격과 재고는 쿠팡에서 확인해 주세요.</p>
   <div class="find">
     <input id="q" type="search" inputmode="search" autocomplete="off" placeholder="영상 속 상품 번호나 이름 (예: 018)" aria-label="상품 번호나 이름으로 찾기">
@@ -259,7 +261,7 @@
 </main>
 <script>
 (function(){
-  var cards=[].slice.call(document.querySelectorAll('.card')), q=document.getElementById('q'), none=document.getElementById('none');
+  var cards=[].slice.call(document.querySelectorAll('.card')), q=document.getElementById('q'), none=document.getElementById('none'), GOD='al/';
   function norm(s){ return (s||'').toLowerCase().replace(/^#/,'').replace(/^p(?=\d|d)/,'').replace(/번호|번|\s/g,''); }
   function byNo(s){                        // 14 → 014, d14 → d014 도 찾음
     var m=s.match(/^(d?)(\d+)(-\d+)?$/); if(!m) return null;
@@ -268,16 +270,17 @@
   }
   function go(c){ cards.forEach(function(x){ x.style.display=''; x.classList.remove('hit'); }); none.style.display='none';
     c.classList.add('hit'); c.scrollIntoView({behavior:'smooth', block:'center'}); }
-  function run(raw){
+  function run(raw, enter){
     var s=norm(raw); cards.forEach(function(x){ x.classList.remove('hit'); });
     if(!s){ cards.forEach(function(x){ x.style.display=''; }); none.style.display='none'; return; }
+    if(GOD && (/^d\d{3}/.test(s) || (enter && /^d\d/.test(s)))){ location.href=GOD+'#'+s; return; }   // 득템송 번호는 알쓸신템 페이지로(세 자리 다 쳤거나 엔터)
     var c=byNo(s); if(c){ go(c); return; }
     var n=0; cards.forEach(function(x){ var ok=x.getAttribute('data-k').replace(/\s/g,'').indexOf(s)>=0; x.style.display=ok?'':'none'; if(ok) n++; });
     none.style.display=n?'none':'block';
   }
   q.addEventListener('input', function(){ run(q.value); });
-  q.addEventListener('keydown', function(ev){ if(ev.key==='Enter'){ q.blur(); run(q.value); } });
-  function hash(){ var h=decodeURIComponent(location.hash||''); if(h.length>1){ q.value=norm(h); run(h); } }
+  q.addEventListener('keydown', function(ev){ if(ev.key==='Enter'){ q.blur(); run(q.value, true); } });
+  function hash(){ var h=decodeURIComponent(location.hash||''); if(h.length>1){ q.value=norm(h); run(h, true); } }
   window.addEventListener('hashchange', hash); hash();
 })();
 </script>
