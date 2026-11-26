@@ -45,14 +45,24 @@
   </header>
   <p class="notice">이 페이지는 네이버 쇼핑 커넥트와 쿠팡 파트너스 활동의 일환으로, 판매 발생 시 수수료를 제공받습니다. 가격과 재고는 각 판매 페이지에서 확인해 주세요.</p>
   <div class="find">
-    <input id="q" type="search" inputmode="numeric" autocomplete="off" placeholder="영상 속 상품 번호나 이름 (예: 2001)" aria-label="상품 번호나 이름으로 찾기">
-    <p>영상 끝에 나온 네 자리 번호를 넣으면 그 상품으로 바로 가요</p>
+    <input id="q" type="search" inputmode="numeric" autocomplete="off" placeholder="영상 속 상품 번호나 이름 (예: 001)" aria-label="상품 번호나 이름으로 찾기">
+    <p>영상 끝에 나온 상품 번호를 넣으면 그 상품으로 바로 가요</p>
   </div>
   <p class="none" id="none">맞는 상품이 없어요. 번호를 다시 확인해 주세요</p>
-    <article class="card" id="2001" data-k="2001 모아클래스 tpe 요가매트 스트레칭할 때 매트가 밀린다면 두 겹 tpe 요가매트. 네이버 스마트스토어 리뷰 3만 6천여 개, 평점 4.78(11/25 기준)">
-      <img src="../img/2001.jpg" alt="모아클래스 TPE 요가매트" loading="lazy" width="300" height="300">
+    <article class="card" id="002" data-alias="2002" data-k="002 2002 멜킨 eva 폼롤러 45cm 퇴근하고 종아리가 뭉쳤다면 속이 꽉 찬 단단한 eva 폼롤러. 네이버 리뷰 14만 개 넘음(11/26 기준)">
+      <img src="../img/e002.jpg" alt="멜킨 EVA 폼롤러 45cm" loading="lazy" width="300" height="300">
       <div class="body">
-        <span class="no">번호 2001</span>
+        <span class="no">번호 002</span>
+        <p class="prob">퇴근하고 종아리가 뭉쳤다면</p>
+        <h2>멜킨 EVA 폼롤러 45cm</h2>
+        <p class="why">속이 꽉 찬 단단한 EVA 폼롤러. 네이버 리뷰 14만 개 넘음(11/26 기준)</p>
+        <div class="btns"><a class="btn nv" href="https://naver.me/GfresuhC" target="_blank" rel="sponsored nofollow noopener">네이버에서 보기</a></div>
+      </div>
+    </article>
+    <article class="card" id="001" data-alias="2001" data-k="001 2001 모아클래스 tpe 요가매트 스트레칭할 때 매트가 밀린다면 두 겹 tpe 요가매트. 네이버 스마트스토어 리뷰 3만 6천여 개, 평점 4.78(11/25 기준)">
+      <img src="../img/e001.jpg" alt="모아클래스 TPE 요가매트" loading="lazy" width="300" height="300">
+      <div class="body">
+        <span class="no">번호 001</span>
         <p class="prob">스트레칭할 때 매트가 밀린다면</p>
         <h2>모아클래스 TPE 요가매트</h2>
         <p class="why">두 겹 TPE 요가매트. 네이버 스마트스토어 리뷰 3만 6천여 개, 평점 4.78(11/25 기준)</p>
@@ -70,7 +80,7 @@
   function run(raw){
     var s=norm(raw); cards.forEach(function(x){ x.classList.remove('hit'); });
     if(!s){ cards.forEach(function(x){ x.style.display=''; }); none.style.display='none'; return; }
-    var c=/^\d{4}$/.test(s) && document.getElementById(s); if(c){ go(c); return; }
+    var c=/^\d{1,4}$/.test(s) && (document.getElementById(s) || document.getElementById(('00'+s).slice(-3)) || document.querySelector('[data-alias="'+s+'"]')); if(c){ go(c); return; }
     var n=0; cards.forEach(function(x){ var ok=x.getAttribute('data-k').replace(/\s/g,'').indexOf(s)>=0; x.style.display=ok?'':'none'; if(ok) n++; });
     none.style.display=n?'none':'block';
   }
